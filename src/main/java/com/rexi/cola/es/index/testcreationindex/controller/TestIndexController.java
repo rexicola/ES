@@ -31,4 +31,7 @@ public class TestIndexController {
 
 		return this.indexManager.installIndex(index, indexConfig.getIndexAlias());
 	}
+
+//TODO add erase all indices
+
 }

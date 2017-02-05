@@ -8,6 +8,8 @@ import org.elasticsearch.action.admin.indices.alias.exists.AliasesExistResponse;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.settings.get.GetSettingsRequestBuilder;
 import org.elasticsearch.client.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,9 @@ import java.util.List;
  */
 @Service
 public class IndexManager {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(IndexManager.class);
 
 	private final Client client;
 
@@ -49,6 +54,7 @@ public class IndexManager {
 		}
 
 		request.setSettings(indexConfig.getIndexSettings());
+		//TODO adding response handling
 		request.get();
 
 		return new Index(indexName);
@@ -59,25 +65,30 @@ public class IndexManager {
 	}
 
 	public Index installIndex(Index index, String indexAlias) {
-		List<String> deletedIndices                     = this.getDeletedIndices(indexAlias);
+		List<String> indicesToDelete                     = this.getIndicesToDelete(indexAlias);
 		IndicesAliasesRequestBuilder aliasRequestBuilder = this.client.admin().indices().prepareAliases();
 
 		aliasRequestBuilder.addAlias(index.getIndexAliasName(), indexAlias);
 
-		for (String oldIndexName : deletedIndices) {
+		//removal from the alias
+		for (String oldIndexName : indicesToDelete) {
+			logger.info(">>>I should remove index " + oldIndexName + " from alias " + indexAlias);
 			aliasRequestBuilder.removeAlias(oldIndexName, indexAlias);
 		}
 
 		aliasRequestBuilder.get();
 
-		if (deletedIndices.size() > 0) {
-			this.client.admin().indices().prepareDelete(deletedIndices.toArray(new String[0])).get();
+
+		//removal from the ES engine
+		if (indicesToDelete.size() > 0) {
+			logger.info(">>>wipe index " + indicesToDelete.toString() + " !!");
+			this.client.admin().indices().prepareDelete(indicesToDelete.toArray(new String[0])).get();
 		}
 
 		return index;
 	}
 
-	private List<String> getDeletedIndices(String indexAlias)
+	private List<String> getIndicesToDelete(String indexAlias)
 	{
 		List <String> deletedIndices = new ArrayList<String>();
 
@@ -87,7 +98,6 @@ public class IndexManager {
 				deletedIndices.add(indexName.value);
 			}
 		} catch (org.elasticsearch.index.IndexNotFoundException e) {
-
 		}
 
 		return deletedIndices;
