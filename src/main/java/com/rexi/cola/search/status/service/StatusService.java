@@ -1,5 +1,6 @@
-package com.rexi.cola.search.status;
+package com.rexi.cola.search.status.service;
 
+import com.rexi.cola.search.status.model.Status;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
 import org.springframework.beans.factory.annotation.Autowired;

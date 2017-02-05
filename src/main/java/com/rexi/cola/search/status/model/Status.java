@@ -1,4 +1,4 @@
-package com.rexi.cola.search.status;
+package com.rexi.cola.search.status.model;
 
 /**
  * Created by moi on 05/02/2017.

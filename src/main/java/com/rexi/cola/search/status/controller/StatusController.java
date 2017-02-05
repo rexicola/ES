@@ -1,7 +1,7 @@
 package com.rexi.cola.search.status.controller;
 
-import com.rexi.cola.search.status.Status;
-import com.rexi.cola.search.status.StatusService;
+import com.rexi.cola.search.status.model.Status;
+import com.rexi.cola.search.status.service.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
