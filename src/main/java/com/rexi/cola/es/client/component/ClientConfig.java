@@ -46,10 +46,15 @@ public class ClientConfig {
 		return addresses.toArray(inetSocketTransportAddressesArray);
 	}
 
-    public Settings getSetting(){
+    public Settings getSettings(){
 		Settings.Builder settingsBuilder = Settings.builder();
 		settingsBuilder.put("cluster.name",this.clusterName);
 		return settingsBuilder.build();
+	}
+
+	public InetSocketTransportAddress[] getHosts()
+	{
+		return this.hosts;
 	}
 
 
