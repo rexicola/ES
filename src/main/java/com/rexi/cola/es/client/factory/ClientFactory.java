@@ -4,6 +4,7 @@ import com.rexi.cola.es.client.component.ClientConfig;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ public class ClientFactory {
 		Settings settings = clientConfig.getSettings();
 		InetSocketTransportAddress[] hosts = clientConfig.getHosts();
 
-		//PreBuiltTransportClient client = new PreBuiltTransportClient(settings);
+		PreBuiltTransportClient client = new PreBuiltTransportClient(settings);
 
 	}
 
