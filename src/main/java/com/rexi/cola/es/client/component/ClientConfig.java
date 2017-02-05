@@ -2,6 +2,8 @@ package com.rexi.cola.es.client.component;
 
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,9 @@ import java.util.List;
  */
 @Component
 public class ClientConfig {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(ClientConfig.class);
 
 	private final String clusterName;
 	private final InetSocketTransportAddress[] hosts;
@@ -32,15 +37,16 @@ public class ClientConfig {
 	private InetSocketTransportAddress[] initHosts(String[] hosts,int port) throws UnknownHostException {
 
 		List<InetSocketTransportAddress> addresses = new ArrayList<>();
-		/*
+
 		for (int i = 0 ; i < hosts.length ; i++)
 		{
+			logger.info(">>Adding Host " + hosts[i] + " on port " + port);
 			InetAddress address = InetAddress.getByName(hosts[i]);
 			addresses.add(new InetSocketTransportAddress(address, port));
 		}
-		*/
-		InetAddress address = InetAddress.getByName("localhost");
-		addresses.add(new InetSocketTransportAddress(address, 9300));
+
+		//InetAddress address = InetAddress.getByName("localhost");
+		//addresses.add(new InetSocketTransportAddress(address, 9300));
 
 		InetSocketTransportAddress[] inetSocketTransportAddressesArray = new InetSocketTransportAddress[addresses.size()];
 		return addresses.toArray(inetSocketTransportAddressesArray);
