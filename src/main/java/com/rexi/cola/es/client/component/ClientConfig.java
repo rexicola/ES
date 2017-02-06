@@ -40,7 +40,7 @@ public class ClientConfig {
 
 		for (int i = 0 ; i < hosts.length ; i++)
 		{
-			logger.info(">>Adding Host " + hosts[i] + " on port " + port);
+			logger.info(">>>>Adding Host " + hosts[i] + " on port " + port);
 			InetAddress address = InetAddress.getByName(hosts[i]);
 			addresses.add(new InetSocketTransportAddress(address, port));
 		}
